@@ -1,0 +1,19 @@
+{
+  "name": "oven-cam-server",
+  "version": "1.0.0",
+  "description": "Node server running oven cam setup and video stream.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrick-huber/oven-cam-server.git"
+  },
+  "author": "Patrick Huber",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/patrick-huber/oven-cam-server/issues"
+  },
+  "homepage": "https://github.com/patrick-huber/oven-cam-server#readme"
+}
