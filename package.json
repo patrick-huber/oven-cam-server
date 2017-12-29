@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/patrick-huber/oven-cam-server/issues"
   },
-  "homepage": "https://github.com/patrick-huber/oven-cam-server#readme"
+  "homepage": "https://github.com/patrick-huber/oven-cam-server#readme",
+  "dependencies": {
+    "bleno": "^0.4.2",
+    "util": "^0.10.3"
+  }
 }
