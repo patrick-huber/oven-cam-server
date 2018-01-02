@@ -24,7 +24,8 @@ bleno.on('advertisingStart', function(error) {
       new BlenoPrimaryService({
         uuid: 'a018',
         characteristics: [
-          new EchoCharacteristic()
+          new EchoCharacteristic('ec00'),
+          new EchoCharacteristic('ec01')
         ]
       })
     ]);

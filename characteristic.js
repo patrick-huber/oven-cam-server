@@ -4,9 +4,9 @@ var bleno = require('bleno');
 
 var BlenoCharacteristic = bleno.Characteristic;
 
-var EchoCharacteristic = function() {
+var EchoCharacteristic = function(charUuid) {
   EchoCharacteristic.super_.call(this, {
-    uuid: 'ec00',
+    uuid: charUuid,
     properties: ['read', 'write', 'notify'],
     value: null
   });
@@ -15,19 +15,16 @@ var EchoCharacteristic = function() {
   this._updateValueCallback = null;
 };
 
-function bin2string(array){
-  var result = "";
-  for(var i = 0; i < array.length; ++i){
-    result+= (String.fromCharCode(array[i]));
-  }
-  return result;
+// ASCII only
+function bytesToString(buffer) {
+  return String.fromCharCode.apply(null, new Uint8Array(buffer));
 }
 
 
 util.inherits(EchoCharacteristic, BlenoCharacteristic);
 
 EchoCharacteristic.prototype.onReadRequest = function(offset, callback) {
-  console.log('EchoCharacteristic - onReadRequest: value = ' + bin2string(this._value));
+  console.log('EchoCharacteristic - onReadRequest: value = ' + bytesToString(this._value));
 
   callback(this.RESULT_SUCCESS, this._value);
 };
@@ -35,7 +32,7 @@ EchoCharacteristic.prototype.onReadRequest = function(offset, callback) {
 EchoCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
 
-  console.log('EchoCharacteristic - onWriteRequest: value = ' + bin2string(this._value));
+  console.log('EchoCharacteristic - onWriteRequest: value = ' + bytesToString(this._value));
 
   if (this._updateValueCallback) {
     console.log('EchoCharacteristic - onWriteRequest: notifying');
