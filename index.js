@@ -3,6 +3,7 @@ var bleno = require('bleno');
 var BlenoPrimaryService = bleno.PrimaryService;
 
 var EchoCharacteristic = require('./characteristic');
+var EchoCharacteristicConnectWifi = require('./connect-wifi');
 
 console.log('bleno - oven-cam');
 
@@ -24,8 +25,8 @@ bleno.on('advertisingStart', function(error) {
       new BlenoPrimaryService({
         uuid: 'a018',
         characteristics: [
-          new EchoCharacteristic('ec00'),
-          new EchoCharacteristic('ec01')
+          // new EchoCharacteristic('ec00'), // Todo: use this characteristic to get available networks
+          new EchoCharacteristicConnectWifi('ec01')
         ]
       })
     ]);

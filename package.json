@@ -18,6 +18,7 @@
   "homepage": "https://github.com/patrick-huber/oven-cam-server#readme",
   "dependencies": {
     "bleno": "^0.4.2",
+    "pi-wifi": "^1.2.0",
     "util": "^0.10.3"
   }
 }
