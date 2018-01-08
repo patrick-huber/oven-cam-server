@@ -6,8 +6,29 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 
+var RaspiCam = require('raspicam');
+
+// Setup new camera with options
+var camera = new RaspiCam({ 
+  mode: 'timelapse',
+  output: './public/images/still.jpg',
+  encoding: 'jpg',
+  nopreview: true,
+  timelapse: 1000,
+  timeout: 5000
+});
+var cameraOn = false;
+
+function startCamera() {
+  cameraOn = true;
+  camera.start();
+}
+// listen for the process to exit when the timeout has been reached
+camera.on('exit', function() {
+  cameraOn = false;
+});
+
 var index = require('./routes/index');
-var camera = require('./routes/camera');
 var users = require('./routes/users');
 
 var app = express();
@@ -28,11 +49,20 @@ app.use(sassMiddleware({
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
+
+app.use('/images/*', function (req, res, next) {
+  if(!cameraOn){
+    // Camera not on, starting
+    startCamera();
+  }
+  next();
+})
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/camera', camera);
 app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

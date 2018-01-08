@@ -1,26 +1,25 @@
 $(document).ready(function () {
   
   // Refresh image
-  var refreshImageTimeout;
+  var refreshImageInterval;
   function refreshImage() {
-    refreshImageTimeout = setInterval(function(){
+    refreshImageInterval = setInterval(function(){
       var d = new Date();
-      $("img#camera").attr("src","/images/still.jpg?" + d.getTime());
+      $('img#camera').attr('src','/images/still.jpg?' + d.getTime());
     }, 1000);
   }
   
-  // Initially camera is off
-  // Todo: get this from server to handle multiple client connections
+  // Keeping this for dev purposes to be able to turn off image refresh
   var cameraOn = false;
   // Turn on/off camera on server and start refreshing images
   $('#cameraControl').on('click', function() {
     var $this = $(this);
     if (cameraOn) {
-      $.get('/camera', {'action': 'stop'}, clearTimeout(refreshImageTimeout));
+      clearTimeout(refreshImageInterval);
       $this.text('Start camera');
       cameraOn = false;
     } else {
-      $.get('/camera', {'action': 'start'}, refreshImage());
+      refreshImage();
       $this.text('Stop camera');
       cameraOn = true;
     }

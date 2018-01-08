@@ -22,6 +22,7 @@ function stopCamera() {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  console.log('reqest');
   var action = req.query.action;
   if(action === 'start') {
     camera.start();
