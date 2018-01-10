@@ -32,3 +32,8 @@ bleno.on('advertisingStart', function(error) {
     ]);
   }
 });
+
+bleno.on('servicesSet', function(error){
+  console.log('Some services set!')
+  // console.log(BlenoPrimaryService);
+});

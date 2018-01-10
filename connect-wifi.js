@@ -1,8 +1,7 @@
 var util = require('util');
-
 var bleno = require('bleno');
-
 var wifi = require('pi-wifi');
+var jsonfile = require('jsonfile');
 
 
 var BlenoCharacteristic = bleno.Characteristic;
@@ -16,8 +15,6 @@ var EchoCharacteristicConnectWifi = function(charUuid) {
 
   this._value = new Buffer(0);
   this._updateValueCallback = null;
-
-  
 };
 
 // ASCII only
@@ -50,9 +47,18 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
   var connect_wifi = 'success';
 
   if (connect_wifi === 'success') {
+    // Update status json file so we don't run setup again
+    var file = './status.json'
+    var obj = {isSetup: true}
+     
+    jsonfile.writeFile(file, obj, function (err) {
+      // console.error(err);
+    })
     console.log('Successful connection!');
     callback(this.RESULT_SUCCESS);
     this._value = data;
+    // Start express server
+    var express_server = require('./bin/www');
   }
 
   // wifi.connect(wifiCredentials[0], wifiCredentials[1], function(err) {
