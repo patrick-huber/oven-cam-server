@@ -1,14 +1,18 @@
-var jsonfile = require('jsonfile');
+// var jsonfile = require('jsonfile');
 
-var file = './status.json';
+// console.log('oven main.js started! 112234');
+ 
+// var file = '/home/pi/start.json'
+// var startDate = new Date().toString();
+// var obj = {startTime1: startDate}
+ 
+// jsonfile.writeFile(file, obj, function (err) {
+//   console.error(err)
+// });
+// console.log('oven main.js wrote startTime: ' + startDate);
 
-jsonfile.readFile(file, function(err, obj) {
-  console.dir(obj.isSetup)
-  if(obj.isSetup) {
-    // Camera already setup
-    var express_server = require('./bin/www');
-  } else {
-    // Turn on bluetooth for setup
-    var ble_server = require('./ble.js');
-  }
-})
+// process.on('exit', function() {
+//   console.log('oven main.js exited! 112233');
+// })
+
+var express = require('./bin/www');

@@ -11,7 +11,7 @@ var RaspiCam = require('raspicam');
 // Setup new camera with options
 var camera = new RaspiCam({ 
   mode: 'timelapse',
-  output: './public/images/still.jpg',
+  output: path.join(__dirname, 'public/images/still.jpg'),
   encoding: 'jpg',
   nopreview: true,
   timelapse: 1000,
