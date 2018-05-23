@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "oven-cam",
+  "private_key_id": "a1b3352868656a0d49d0e56c98f1306f6849377f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDlxGN4afJi31KK\nHPctC00GXVca/3m3ARtHHMaik9kX3YhqX1Kj0SIl3khFeaAflyZeNsNUzDebsgN7\nU0amnZw5H1/dpkF6t0XWaa/LGt8+ct5xwu3VRi0Egb9Mue30z4oayQFWSokzNE5/\nzvkCaSPav8XiIuMnin92GLUfn8quv9dUJQDfKsw/w0Hi7S+Cp7DYVV++dKApG5rZ\nMUOkXNi3uTPqkCXgk1UuzqiADIKvQ9MCD681gGQavUI3sY8dIEFT26EPNn9Y+fUm\nffaqnlKho9eqrGd8zOlXMRsyfapbSwh0spf2P0bkFQFmAIcMe5g7wZtFtPfzoFfm\n98zrjmYPAgMBAAECggEAYTiEiFZ4D9sD71nLQt2FxXwoV82i4EsREjl8WR1rHhyI\nVM4pxxQ+OTzBYthQZx2LSBEu/In+u5wKuhumCOkmycrbQwvOqBC1dcC5eBzSOnfb\nZNKA1R4A/WezHNGNfOl2O9gyfyNBw49N6emXVqxLVguQPRva9we04DEbLprr5Z2M\nhD//3w+CZ5C8FWJRacPL4+cNtnqsh5X12Q6vDUNocdDDhsrtdRgUmayLXtJlNG2G\n9jyerzczr1/5ysXZadfYycNuydvTM5fwzwPZ7tWCQGqKSlqUfpsUiwGnoexjAVwn\nLdlC7BFmq0BiW2SdukUOe0R6vyD8Et7z0ZcvvX9sIQKBgQD/vr3seOEuj7r9fqn5\nvSA/W/VjP1PKzzj9OuED/UgH+3EwV+Qwx5koo6uIKMF0XiWMCCRXpyvoUOTxjWqF\n/AQCF8y4/mLIyLTDRSxxkmK7eSSXiQN7JLhOc8hmjt1prfxzDWrerSYLBbLBwcan\n2hwRvza4igrGJgA2BqEOwYU3bwKBgQDl/wSV3oEHlqmKB6yKiCQP/0M/NsCvXpRj\nA+04FBqExl6g5Qc6op8pT1/Xx+1Ge/cSOUtUWEi0bc2mo0Yf5vZFagoSvvDPmchC\nJGiO4OmK9rsX2sCUtKj3bRt+spJrabTPhF1/tqqyHcSquOHcN0qAneNIp6AQw6aB\nTK10CCdrYQKBgGf5EBXXfxUC8i6lFE2oCjg4Fqdm05YccTrieSC6FFLKctYIpYj/\nXNEc2Vvd1eiNbg5kMQJBwKQOX0WlDK20K5z+OAjtwxOGJZdNxCfYL7OwKKRC29tw\nrk2W3N51LqcMSRotVkl5c4H/qxECytTq44aDiqez13V/dY6BW3E4VASZAoGBAKJN\nnEbGhfd88pddYv0/pXNEh4gMc11OORjGpJh2V2BrPEv+U2OlbvwP72quw1qCEJDj\nra0Pv/7TndSCU/IfYpsJgaJI7FcUBqXmW4K4ZRaTluP2kwBdnP8+F7EJAxqZtebb\nWb/OgBbBuw9e+MQWoJSy1rlm0SYDa3TDT4QaXPcBAoGBAP7jpl5JlckjZVlpV1LR\nXHpbMNm6kJhcNGUalr8j4G8X9ER85xpT1DMAJ1z649TCseM1RtGhR9jG0E1yggUQ\nkbMC2Tm+UXQLYJQ9O8h2bwuBrbCK5rnoUIhH/lHd2j85EU5veW50s+GLXlBCl05c\nmd9Xs+vEWt3CZz5XcytPL7qE\n-----END PRIVATE KEY-----\n",
+  "client_email": "cam-server@oven-cam.iam.gserviceaccount.com",
+  "client_id": "114918622981917460666",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cam-server%40oven-cam.iam.gserviceaccount.com"
+}
