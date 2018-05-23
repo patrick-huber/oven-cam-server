@@ -2,16 +2,13 @@ const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
   projectId: 'oven-cam',
-  keyFilename: './oven-cam-keyfile.json',
+  keyFilename: './oven-cam-keystore.json',
 });
 
-const document = firestore.doc('posts/intro-to-firestore');
+let collectionRef = firestore.collection('cameras');
 
-// Enter new data into the document.
-document.set({
-  title: 'Welcome to Firestore',
-  body: 'Macbook test',
-}).then(() => {
-  // Document created successfully.
-  console.log('doc update!');
+// Test to add new camera document and return document id
+collectionRef.add({foo: 'bar'}).then(documentReference => {
+  let doc_id = documentReference.id;
+  console.log(`New document id: ${doc_id}`);
 });
