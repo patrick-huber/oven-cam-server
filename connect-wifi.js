@@ -57,11 +57,11 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
   // Temp variables for testing
   var ssid = wifiCredentials[0];
-  var status.ip = '10.0.0.59';
+//  var status[ip] = '10.0.0.59';
 
 
   if (connect_wifi === 'success') {
-    console.log('Connected to the network ' + ssid + '! IP: ' + status.ip);
+    console.log('Connected to the network ' + ssid);
     
     // Write to firestore
     var cam_id = '';
@@ -72,7 +72,7 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
     collectionRef.add({
       battery_level: 100, // Todo: need to get from pi-power
       charging: false, // Todo: need to get from pi-power
-      local_ip: status.ip + ':3000', // Don't forget to add 3000 port on the express server
+      local_ip: '10.0.0.59' + ':3000', // Don't forget to add 3000 port on the express server
       name: 'Oven cam',
       status: 'online'
     }).then(documentReference => {  
