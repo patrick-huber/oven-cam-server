@@ -62,3 +62,6 @@ typings/
 
 # Google Firestore keystore credentials file
 oven-cam-keystore.json
+
+# Power status file
+power/power-status.json

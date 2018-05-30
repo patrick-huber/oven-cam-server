@@ -62,6 +62,18 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
   if (connect_wifi === 'success') {
     console.log('Connected to the network ' + ssid);
+
+    // Get camera power status from file
+    var power_status = './power/power-status.json';
+    var battery_pct = 0;
+    var charging_status = false;
+    jsonfile.readFile(power_status, function(err, power_obj) {
+      if(!err) {
+        battery_pct = Number.parseFloat(power_obj[battery_percent]).toFixed(0);
+        charging_status = (power_obj[power_source] === 'usb') ? true | false;
+      }
+    });
+
     
     // Write to firestore
     var cam_id = '';
@@ -70,8 +82,8 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
     // Add new camera document and return document id
     collectionRef.add({
-      battery_level: 100, // Todo: need to get from pi-power
-      charging: false, // Todo: need to get from pi-power
+      battery_level: battery_pct,
+      charging: charging_status,
       local_ip: '10.0.0.59' + ':3000', // Don't forget to add 3000 port on the express server
       name: 'Oven cam',
       status: 'online'
@@ -93,6 +105,8 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
     // Start express server
     var express_server = require('./bin/www');
+
+    // Todo: exit ble.js
   }
 
   var network = {

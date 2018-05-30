@@ -284,7 +284,7 @@ while True:
                         f.write('{0:d},{1:.3f},{2:.3f},{3:.3f},{4:s},{5:s}\n'.format(elapsed_time, v_bat, v_usb, fraction_battery, power_source, msg))
 
         # Write the battery percent and power status to file - used by pi_power_leds.py
-        data = {'batter_percent':fraction_battery,'power_source':power_source}
+        data = {'battery_percent':fraction_battery,'power_source':power_source}
         with open(pi_power_status_path, "w") as outfile:
             json.dump(data, outfile)
 

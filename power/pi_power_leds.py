@@ -111,7 +111,7 @@ poll_interval = 30
 
 # Path to the .pi_power status file
 
-pi_power_file_path = '/home/pi/.pi_power_status'
+pi_power_file_path = './power-status.json'
 
 power_source = 'unknown'
 power_fraction = 1.0
@@ -125,12 +125,11 @@ GPIO.setup(led_pin['green'], GPIO.OUT)
 while True:
     # read the .pi_power status file
     try:
-        with open(pi_power_file_path, "r") as f:
+        with open(pi_power_file_path) as data_file:    
+            data = json.load(data_file)
 
-            fields = f.read().rstrip().split(',')
-
-            power_fraction = float(fields[0])
-            power_source   = fields[1]
+            power_fraction = data[battery_percent]
+            power_source   = data[power_source]
     except IOError:
         # dummy statement to handle python indentation...
         dummy = 1
