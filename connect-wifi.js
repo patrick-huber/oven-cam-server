@@ -63,50 +63,52 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
   if (connect_wifi === 'success') {
     console.log('Connected to the network ' + ssid);
 
-    // Get camera power status from file
-    var power_status = './power/power-status.json';
-    var battery_pct = 0;
-    var charging_status = false;
-    jsonfile.readFile(power_status, function(err, power_obj) {
-      if(!err) {
-        battery_pct = Number.parseFloat(power_obj[battery_percent]).toFixed(0);
-        charging_status = (power_obj[power_source] === 'usb') ? true | false;
-      }
-    });
-
     
     // Write to firestore
-    var cam_id = '';
-
     let collectionRef = firestore.collection('cameras');
+    var cam_id = '';
+    var battery_pct = 100;
+    var charging_status = false;
 
-    // Add new camera document and return document id
-    collectionRef.add({
-      battery_level: battery_pct,
-      charging: charging_status,
-      local_ip: '10.0.0.59' + ':3000', // Don't forget to add 3000 port on the express server
-      name: 'Oven cam',
-      status: 'online'
-    }).then(documentReference => {  
-      // Todo: need to send back cam_id to client
-      cam_id = documentReference.id;
-      console.log(`New document id: ${cam_id}`);
+    // Get camera power status from file
+    var power_status = './power/power-status.json';
+    jsonfile.readFile(power_status, function(err, power_obj) {
+      if(!err) {
+        console.log('setting values from json');
+        // try to update camera power after reading json file
+        battery_pct = Math.round(power_obj.battery_percent * 100);
+        charging_status = (power_obj.power_source === 'usb') ? true : false;
+      }
+      // Add new camera document and return document id
+      collectionRef.add({
+        battery_level: battery_pct,
+        charging: charging_status,
+        local_ip: '10.0.0.59' + ':3000', // Don't forget to add 3000 port on the express server
+        name: 'Oven cam',
+        status: 'online'
+      }).then(documentReference => {  
+        // Todo: need to send back cam_id to client
+        cam_id = documentReference.id;
+        console.log(`New document id: ${cam_id}`);
+
+        // Update status json file so we don't run setup again
+        var file = './status.json'
+        var obj = {isSetup: true}
+        jsonfile.writeFile(file, obj, function (err) {
+          // console.error(err);
+        });
+
+        callback(this.RESULT_SUCCESS);
+        this._value = cam_id;
+
+        // Start express server
+        var express_server = require('./bin/www');
+
+        // Todo: exit ble.js
+        process.exit();
+      });
     });
 
-    // Update status json file so we don't run setup again
-    var file = './status.json'
-    var obj = {isSetup: true}
-    jsonfile.writeFile(file, obj, function (err) {
-      // console.error(err);
-    });
-
-    callback(this.RESULT_SUCCESS);
-    this._value = data;
-
-    // Start express server
-    var express_server = require('./bin/www');
-
-    // Todo: exit ble.js
   }
 
   var network = {
