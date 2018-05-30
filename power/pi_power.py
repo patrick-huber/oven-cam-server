@@ -23,6 +23,7 @@ import time
 import os
 import argparse
 import RPi.GPIO as GPIO
+import json
 
 
 # read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
@@ -203,7 +204,7 @@ battery_max_voltage = 4.1
 adc_conversion_factor = (gpio_max_voltage / voltage_divider(voltage_divider_r1, voltage_divider_r2, usb_max_voltage)) * usb_max_voltage
 
 
-pi_power_status_path = '/home/pi/.pi_power_status'
+pi_power_status_path = './power-status.json'
 pi_power_log_path    = '/home/pi/pi_power_log.csv'
 
 
@@ -282,9 +283,10 @@ while True:
                 with open(pi_power_log_path, "a") as f:
                         f.write('{0:d},{1:.3f},{2:.3f},{3:.3f},{4:s},{5:s}\n'.format(elapsed_time, v_bat, v_usb, fraction_battery, power_source, msg))
 
-        # Write the .pi_power status file - used by pi_power_leds.py
-        with open(pi_power_status_path, "w") as f:
-                f.write('{0:.3f},{1:s}\n'.format(fraction_battery,power_source))
+        # Write the battery percent and power status to file - used by pi_power_leds.py
+        data = {'batter_percent':fraction_battery,'power_source':power_source}
+        with open(pi_power_status_path, "w") as outfile:
+            json.dump(data, outfile)
 
         # Low battery shutdown - specify the time delay in seconds
         if fraction_battery < fraction_battery_min:
