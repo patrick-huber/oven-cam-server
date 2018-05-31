@@ -119,7 +119,10 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
             // Update status json file so we don't run setup again
             var file = './status.json'
-            var obj = {isSetup: true}
+            var obj = {
+              isSetup: true,
+              id: cam_id
+            }
             jsonfile.writeFile(file, obj, function (err) {
               // console.error(err);
             });

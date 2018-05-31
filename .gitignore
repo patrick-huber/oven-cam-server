@@ -65,3 +65,6 @@ oven-cam-keystore.json
 
 # Power status file
 power/power-status.json
+
+# Cam status file
+status.json
