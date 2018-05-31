@@ -19,8 +19,8 @@ function x() {
           }
       }
     }, 1000);
-   });
-   return promise;
+  });
+  return promise;
 }
 
 exports.data = methods;
