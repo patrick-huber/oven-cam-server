@@ -1,5 +1,14 @@
 # oven-cam-server
 
+## main.js
+Run main.js at launch in rc.local (make sure this comes before ``exit 0``). This will check the status of camera (status.json) and either run Bluetooth setup or Camera feed.
+```
+sudo node /home/pi/oven-cam-server/main.js &
+```
+
+## Bluetooth setup (ble.js)
+Must be run as root (sudo). This is used to first connect to the oven camera to setup wifi and allow the client to connect to camera feed.
+
 ## Camera feed (app.js)
 Uses node raspicam to capture pictures and express server to serve photos to client.
 
