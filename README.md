@@ -20,3 +20,11 @@ DEBUG=myapp:* npm start
 ### Client
 Navigate to:
 http://10.0.0.31:3000/
+
+## Pi power
+Power and battery status are run via the power/pi_power.py script. This script needs to be run at launch in rc.local (make sure this comes before ``exit 0``).
+```
+/home/pi/oven-cam-server/power/pi_power.py &
+```
+
+Pi power source: https://github.com/craic/pi_power

@@ -204,7 +204,7 @@ battery_max_voltage = 4.1
 adc_conversion_factor = (gpio_max_voltage / voltage_divider(voltage_divider_r1, voltage_divider_r2, usb_max_voltage)) * usb_max_voltage
 
 
-pi_power_status_path = './power-status.json'
+pi_power_status_path = '/home/pi/oven-cam-server/power/power-status.json'
 pi_power_log_path    = '/home/pi/pi_power_log.csv'
 
 
