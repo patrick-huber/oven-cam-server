@@ -1,6 +1,7 @@
 var util = require('util');
 var bleno = require('bleno');
 var wifi = require('pi-wifi');
+var os = require('os');
 var jsonfile = require('jsonfile');
 
 const Firestore = require('@google-cloud/firestore');
@@ -52,94 +53,69 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
   }
 
   // Mock function to run without configuring wifi
-  var connect_wifi = 'success';
+  // var connect_wifi = 'success';
   // var connect_wifi = 'fail';
 
   // Temp variables for testing
-  var ssid = wifiCredentials[0];
+  // var ssid = wifiCredentials[0];
 //  var status[ip] = '10.0.0.59';
-
-
-  if (connect_wifi === 'success') {
-    console.log('Connected to the network ' + ssid);
-
-    
-    // Write to firestore
-    let collectionRef = firestore.collection('cameras');
-    var cam_id = '';
-    var battery_pct = 100;
-    var charging_status = false;
-
-    // Get camera power status from file
-    var power_status = './power/power-status.json';
-    jsonfile.readFile(power_status, function(err, power_obj) {
-      if(!err) {
-        console.log('setting values from json');
-        // try to update camera power after reading json file
-        battery_pct = Math.round(power_obj.battery_percent * 100);
-        charging_status = (power_obj.power_source === 'usb') ? true : false;
-      }
-      // Add new camera document and return document id
-      collectionRef.add({
-        battery_level: battery_pct,
-        charging: charging_status,
-        local_ip: '10.0.0.59' + ':3000', // Don't forget to add 3000 port on the express server
-        name: 'Oven cam',
-        status: 'online'
-      }).then(documentReference => {  
-        // Todo: need to send back cam_id to client
-        cam_id = documentReference.id;
-        console.log(`New document id: ${cam_id}`);
-
-        // Update status json file so we don't run setup again
-        var file = './status.json'
-        var obj = {isSetup: true}
-        jsonfile.writeFile(file, obj, function (err) {
-          // console.error(err);
-        });
-
-        callback(this.RESULT_SUCCESS);
-        this._value = cam_id;
-
-        // Start express server
-        var express_server = require('./bin/www');
-
-        // Todo: exit ble.js
-        process.exit();
-      });
-    });
-
-  }
 
   var network = {
     ssid: wifiCredentials[0],
     password: wifiCredentials[1]
   };
-  /*
+
   wifi.connectTo(network, function(err) {
     if (!err) { //Network created correctly
-      setTimeout(function () {
-        wifi.check(ssid, function (err, status) {
-          if (!err && status.connected) {
-            console.log('Connected to the network ' + ssid + '! IP: ' + status.ip);
-            
-            // Write to firestore
-            var cam_id = '';
+      console.log('connected! getting ip...');
 
-            let collectionRef = firestore.collection('cameras');
+      var ip_address = '';
+      var checkAddresses = setInterval(function(){
+        console.log('checking for ip...');
+        var interfaces = os.networkInterfaces();
+        for (var k in interfaces) {
+            for (var k2 in interfaces[k]) {
+                var address = interfaces[k][k2];
+                if (address.family === 'IPv4' && !address.internal) {
+                  console.log('address found! ' + address.address);
+                    ip_address = address.address;
+                    clearInterval(checkAddresses);
+                    dbWrite();
+                }
+            }
+        }
+      }, 2000);
 
-            // Add new camera document and return document id
-            collectionRef.add({
-              battery_level: 100, // Todo: need to get from pi-power
-              charging: false, // Todo: need to get from pi-power
-              local_ip: status.ip + ':3000', // Don't forget to add 3000 port on the express server
-              name: 'Oven cam',
-              status: 'online'
-            }).then(documentReference => {  
-              // Todo: need to send back cam_id to client
-              cam_id = documentReference.id;
-              console.log(`New document id: ${cam_id}`);
-            });
+      console.log('Connected to the network!');
+
+      function dbWrite() {
+
+        // Write to firestore
+        let collectionRef = firestore.collection('cameras');
+        var cam_id = '';
+        var battery_pct = 100;
+        var charging_status = false;
+
+        // Get camera power status from file
+        var power_status = './power/power-status.json';
+        jsonfile.readFile(power_status, function(err, power_obj) {
+          if(!err) {
+            console.log('setting values from json');
+            // try to update camera power after reading json file
+            battery_pct = Math.round(power_obj.battery_percent * 100);
+            charging_status = (power_obj.power_source === 'usb') ? true : false;
+          }
+          // Add new camera document and return document id
+          collectionRef.add({
+            battery_level: battery_pct,
+            charging: charging_status,
+            local_ip: ip_address + ':3000', // Don't forget to add 3000 port on the express server
+            name: 'Oven cam',
+            status: 'online'
+          }).then(documentReference => {  
+            // Todo: need to send back cam_id to client
+            cam_id = documentReference.id;
+            console.log(`New document id: ${cam_id}`);
 
             // Update status json file so we don't run setup again
             var file = './status.json'
@@ -149,24 +125,27 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             });
 
             callback(this.RESULT_SUCCESS);
-            this._value = data;
+            this._value = cam_id;
 
             // Start express server
             var express_server = require('./bin/www');
-          } else {
-            console.log('Unable to connect to the network ' + ssid + '!');
-            console.error(err.message);
-            callback(false);
-          }
+
+            // Todo: exit ble.js
+            process.exit();
+          });
+
         });
-      }, 2000);
+
+      }
+      
+      
+      
     } else {
-      console.log('Unable to create the network ' + ssid + '.');
+      console.log('Unable to create the network');
       console.error(err.message);
       callback(false);
     }
   });
-  */
 
   // Legacy wifi connect. Remove after checking wifi.connectTo function above
   // wifi.connect(wifiCredentials[0], wifiCredentials[1], function(err) {
