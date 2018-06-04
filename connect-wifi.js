@@ -8,7 +8,7 @@ const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
   projectId: 'oven-cam',
-  keyFilename: './oven-cam-keystore.json',
+  keyFilename: '/home/pi/oven-cam-server/oven-cam-keystore.json',
 });
 
 
@@ -103,7 +103,7 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
         var charging_status = false;
 
         // Get camera power status from file
-        var power_status = './power/power-status.json';
+        var power_status = '/home/pi/oven-cam-server/power/power-status.json';
         jsonfile.readFile(power_status, function(err, power_obj) {
           if(!err) {
             console.log('setting values from json');
@@ -124,7 +124,7 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             console.log(`New document id: ${cam_id}`);
 
             // Update status json file so we don't run setup again
-            var file = './status.json'
+            var file = '/home/pi/oven-cam-server/status.json'
             var obj = {
               isSetup: true,
               id: cam_id
