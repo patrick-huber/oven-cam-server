@@ -80,6 +80,12 @@ def voltage_divider(r1, r2, vin):
 # Set up a trigger to shutdown the system when the power button is pressed
 # define a setup routine and the actual shutdown method
 
+# Update status file to shutdown. Used by firestore.js to update camera status to offline
+def shutdown_status():
+    data = {'battery_percent':fraction_battery,'power_source':power_source,'status':'offline'}
+    with open(pi_power_status_path, "w") as outfile:
+        json.dump(data, outfile)
+
 # The shutdown code is based on that in https://github.com/NeonHorizon/lipopi
 
 def user_shutdown_setup(shutdown_pin):
@@ -92,6 +98,9 @@ def user_shutdown_setup(shutdown_pin):
 # User has pressed shutdown button - initiate a clean shutdown
 def user_shutdown(channel):
     global safe_mode
+
+    # Update status
+    shutdown_status()
         
     shutdown_delay = 10 # seconds
 
@@ -114,6 +123,9 @@ def user_shutdown(channel):
 # Shutdown system because of low battery
 def low_battery_shutdown():
     global safe_mode
+
+    # Update status
+    shutdown_status()
 
     shutdown_delay = 30 # seconds
     
@@ -284,7 +296,7 @@ while True:
                         f.write('{0:d},{1:.3f},{2:.3f},{3:.3f},{4:s},{5:s}\n'.format(elapsed_time, v_bat, v_usb, fraction_battery, power_source, msg))
 
         # Write the battery percent and power status to file - used by pi_power_leds.py
-        data = {'battery_percent':fraction_battery,'power_source':power_source}
+        data = {'battery_percent':fraction_battery,'power_source':power_source,'status':'online'}
         with open(pi_power_status_path, "w") as outfile:
             json.dump(data, outfile)
 

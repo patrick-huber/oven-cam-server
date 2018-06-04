@@ -8,9 +8,7 @@ const firestore = new Firestore({
   keyFilename: './oven-cam-keystore.json',
 });
 
-var newData = {
-  "status": "online"
-}
+var newData = {}
 
 var status_file = './status.json';
 var power_file = './power/power-status.json';
@@ -32,7 +30,7 @@ function setIp(camDoc) {
   console.log('setIp');
   // On first run get current ip in case router changed it since last boot
   ip.data.current.then(function(address) {
-    newData["local_ip"] = address;
+    newData["local_ip"] = address + ':3000';
     updateDocument(camDoc,newData);
   });
 }
@@ -46,6 +44,7 @@ function getPowerStatus() {
         console.log('read power file');
         newData["battery_level"] = Math.round(power_obj.battery_percent * 100);
         newData["charging"] = (power_obj.power_source === 'usb') ? true : false;
+        newData["status"] = power_obj.status;
         resolve(newData);
       }
     });
