@@ -46,7 +46,7 @@ EchoCharacteristicConnectWifi.prototype.onReadRequest = function(offset, callbac
 };
 
 EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-  
+  var _this = this;
   var wifiCredentials = bytesToString(data).split(',');
 
   console.log('EchoCharacteristicConnectWifi - onWriteRequest: value = ' + bytesToString(this._value));
@@ -133,8 +133,9 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
               // console.error(err);
             });
 
+            _this._value = Buffer.from(cam_id, 'utf8');
+
             callback(this.RESULT_SUCCESS);
-            this._value = Buffer.from(cam_id, 'utf8');
           });
 
         });
