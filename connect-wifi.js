@@ -37,6 +37,12 @@ EchoCharacteristicConnectWifi.prototype.onReadRequest = function(offset, callbac
   console.log('EchoCharacteristicConnectWifi - onReadRequest: value = ' + bytesToString(this._value));
 
   callback(this.RESULT_SUCCESS, this._value);
+
+  // Only after sending back cam_id, then we close out the bluetooth connection
+  // Start express server
+  var express_server = require('./bin/www');
+
+  process.exit();
 };
 
 EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
@@ -129,12 +135,6 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
 
             callback(this.RESULT_SUCCESS);
             this._value = Buffer.from(cam_id, 'utf8');
-
-            // Start express server
-            var express_server = require('./bin/www');
-
-            // Todo: exit ble.js
-            process.exit();
           });
 
         });
