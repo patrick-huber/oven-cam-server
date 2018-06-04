@@ -6,6 +6,6 @@ jsonfile.readFile(status, function(err, obj) {
     // Setup complete. Run express
     var express = require('./bin/www');
   } else {
-    var setup = require('ble');
+    var setup = require('./ble');
   }
 });

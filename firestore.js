@@ -5,13 +5,13 @@ var ip = require('./local_ip');
 
 const firestore = new Firestore({
   projectId: 'oven-cam',
-  keyFilename: './oven-cam-keystore.json',
+  keyFilename: '/home/pi/oven-cam-server/oven-cam-keystore.json',
 });
 
 var newData = {}
 
-var status_file = './status.json';
-var power_file = './power/power-status.json';
+var status_file = '/home/pi/oven-cam-server/status.json';
+var power_file = '/home/pi/oven-cam-server/power/power-status.json';
 
 // Get camera id right away and setup firestore camera document
 jsonfile.readFile(status_file, function(err, status_obj) {
