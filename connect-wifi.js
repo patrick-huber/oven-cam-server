@@ -128,7 +128,7 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             });
 
             callback(this.RESULT_SUCCESS);
-            this._value = cam_id;
+            this._value = Buffer.from(cam_id, 'utf8');
 
             // Start express server
             var express_server = require('./bin/www');
