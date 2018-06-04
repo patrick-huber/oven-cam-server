@@ -37,19 +37,13 @@ EchoCharacteristicConnectWifi.prototype.onReadRequest = function(offset, callbac
   console.log('EchoCharacteristicConnectWifi - onReadRequest: value = ' + bytesToString(this._value));
 
   callback(this.RESULT_SUCCESS, this._value);
-
-  // Only after sending back cam_id, then we close out the bluetooth connection
-  // Start express server
-  var express_server = require('./bin/www');
-
-  process.exit();
 };
 
 EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   var _this = this;
   var wifiCredentials = bytesToString(data).split(',');
 
-  console.log('EchoCharacteristicConnectWifi - onWriteRequest: value = ' + bytesToString(this._value));
+  console.log('Wifi credentials received. Connecting to network: ' + wifiCredentials[0]);
 
 
 
@@ -57,14 +51,6 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
     console.log('EchoCharacteristicConnectWifi - onWriteRequest: notifying');
     this._updateValueCallback(this._value);
   }
-
-  // Mock function to run without configuring wifi
-  // var connect_wifi = 'success';
-  // var connect_wifi = 'fail';
-
-  // Temp variables for testing
-  // var ssid = wifiCredentials[0];
-//  var status[ip] = '10.0.0.59';
 
   var network = {
     ssid: wifiCredentials[0],
@@ -136,13 +122,13 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             _this._value = Buffer.from(cam_id, 'utf8');
 
             callback(this.RESULT_SUCCESS);
+
+            // Start express server
+            var express_server = require('./bin/www');
+
           });
-
         });
-
       }
-      
-      
       
     } else {
       console.log('Unable to create the network');
