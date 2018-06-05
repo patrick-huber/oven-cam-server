@@ -2,7 +2,7 @@ var bleno = require('bleno');
 
 var BlenoPrimaryService = bleno.PrimaryService;
 
-var EchoCharacteristic = require('./characteristic');
+// var EchoCharacteristic = require('./characteristic');
 var EchoCharacteristicConnectWifi = require('./connect-wifi');
 
 console.log('bleno - oven-cam');
