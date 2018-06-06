@@ -25,12 +25,12 @@
 # Using Bi-color LED so GPIO settings are mixed
 def led_on(color):
     if color == 'green':
-        GPIO.output(20, GPIO.HIGH)
-        GPIO.output(21, GPIO.LOW)
-
-    elif color == 'red':
         GPIO.output(20, GPIO.LOW)
         GPIO.output(21, GPIO.HIGH)
+
+    elif color == 'red':
+        GPIO.output(20, GPIO.HIGH)
+        GPIO.output(21, GPIO.LOW)
 
     elif color == 'yellow':
         GPIO.output(20, GPIO.HIGH)
@@ -93,7 +93,7 @@ def update_leds(current_color, time_on, time_off):
             # led on, sleep, led off, sleep
             led_on(current_color)
             time.sleep(time_on)
-            led_on(current_color)
+            led_on()
             time.sleep(time_off)
 
 
@@ -102,6 +102,7 @@ def update_leds(current_color, time_on, time_off):
 import time
 import os
 import RPi.GPIO as GPIO
+import json
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -139,8 +140,8 @@ while True:
         with open(pi_power_file_path) as data_file:    
             data = json.load(data_file)
 
-            power_fraction = data[battery_percent]
-            power_source   = data[power_source]
+            power_fraction = data['battery_percent']
+            power_source   = data['power_source']
     except IOError:
         # dummy statement to handle python indentation...
         dummy = 1
