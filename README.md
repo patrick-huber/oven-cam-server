@@ -24,8 +24,9 @@ Navigate to:
 http://10.0.0.31:3000/
 
 ## Pi power
-Power and battery status are run via the power/pi_power.py script. This script needs to be run at launch in rc.local (make sure this comes before ``exit 0``).
+Power and battery status are run via the power/pi_power.py script. This script needs to be run at launch in rc.local (make sure this comes before ``exit 0``). The pi_power_leds reads the power-status file and controls the battery status led.
 ```
+/home/pi/oven-cam-server/power/pi_power_leds.py &
 /home/pi/oven-cam-server/power/pi_power.py &
 ```
 
