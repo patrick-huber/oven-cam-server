@@ -93,7 +93,7 @@ def update_leds(current_color, time_on, time_off):
             # led on, sleep, led off, sleep
             led_on(current_color)
             time.sleep(time_on)
-            led_on()
+            led_on('off')
             time.sleep(time_off)
 
 
