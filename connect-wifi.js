@@ -4,6 +4,11 @@ var wifi = require('wifi-control');
 var ip = require('./local_ip');
 var jsonfile = require('jsonfile');
 
+var status_file = '/home/pi/oven-cam-server/status.json';
+
+var BlenoCharacteristic = bleno.Characteristic;
+var CharacteristicValue = new Buffer(0);
+
 const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
@@ -14,19 +19,30 @@ const firestore = new Firestore({
 // Init wifi control
 wifi.init();
 
+// Check json file for cam id
+jsonfile.readFile(status_file, function(err, status_obj) {
+  if(!err) {
+    if(status_obj['id']) {
+      console.log('setting characteristic value (cam id) from status file')
+      CharacteristicValue = Buffer.from(status_obj['id'], 'utf8');
+    }
+  }
+  startCharacteristic();
+});
 
-var BlenoCharacteristic = bleno.Characteristic;
+function startCharacteristic() {
+  var EchoCharacteristicConnectWifi = function(charUuid) {
+    EchoCharacteristicConnectWifi.super_.call(this, {
+      uuid: charUuid,
+      properties: ['read','write','notify'],
+      value: CharacteristicValue
+    });
 
-var EchoCharacteristicConnectWifi = function(charUuid) {
-  EchoCharacteristicConnectWifi.super_.call(this, {
-    uuid: charUuid,
-    properties: ['read','write','notify'],
-    value: 0
-  });
+    this._value = CharacteristicValue;
+    this._updateValueCallback = null;
+  }
+}
 
-  this._value = new Buffer(0);
-  this._updateValueCallback = null;
-};
 
 // ASCII only
 function bytesToString(buffer) {
@@ -98,12 +114,11 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             console.log(`New document id: ${cam_id}`);
 
             // Update status json file so we don't run setup again
-            var file = '/home/pi/oven-cam-server/status.json'
             var obj = {
               isSetup: true,
               id: cam_id
             }
-            jsonfile.writeFile(file, obj, function (err) {
+            jsonfile.writeFile(status_file, obj, function (err) {
               // console.error(err);
             });
 
