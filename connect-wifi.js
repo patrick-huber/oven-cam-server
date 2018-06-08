@@ -4,6 +4,8 @@ var wifi = require('wifi-control');
 var ip = require('./local_ip');
 var jsonfile = require('jsonfile');
 
+var status_file = '/home/pi/oven-cam-server/status.json';
+
 const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
@@ -109,12 +111,11 @@ EchoCharacteristicConnectWifi.prototype.onWriteRequest = function(data, offset, 
             console.log(`New document id: ${cam_id}`);
 
             // Update status json file so we don't run setup again
-            var file = '/home/pi/oven-cam-server/status.json'
             var obj = {
               isSetup: true,
               id: cam_id
             }
-            jsonfile.writeFile(file, obj, function (err) {
+            jsonfile.writeFile(status_file, obj, function (err) {
               // console.error(err);
             });
 
