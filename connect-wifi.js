@@ -21,10 +21,21 @@ var EchoCharacteristicConnectWifi = function(charUuid) {
   EchoCharacteristicConnectWifi.super_.call(this, {
     uuid: charUuid,
     properties: ['read','write','notify'],
-    value: 0
+    value: null
   });
 
-  this._value = new Buffer(0);
+  var characteristicValue = new Buffer(0);
+  // Check json file for cam id
+  jsonfile.readFile(status_file, function(err, status_obj) {
+    if(!err) {
+      if(status_obj['isSetup']) {
+        console.log('setting characteristic value (cam id) from status file')
+        characteristicValue = Buffer.from(status_obj['id'], 'utf8');
+      }
+    }
+    this._value = characteristicValue;
+  });
+
   this._updateValueCallback = null;
 };
 
