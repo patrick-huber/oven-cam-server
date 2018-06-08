@@ -20,6 +20,7 @@ wifi.init();
 var BlenoCharacteristic = bleno.Characteristic;
 
 var EchoCharacteristicConnectWifi = function(charUuid) {
+  var _this = this;
   EchoCharacteristicConnectWifi.super_.call(this, {
     uuid: charUuid,
     properties: ['read','write','notify'],
@@ -35,7 +36,7 @@ var EchoCharacteristicConnectWifi = function(charUuid) {
         characteristicValue = Buffer.from(status_obj['id'], 'utf8');
       }
     }
-    this._value = characteristicValue;
+    _this._value = characteristicValue;
   });
 
   this._updateValueCallback = null;
