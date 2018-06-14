@@ -29,7 +29,6 @@ camera.on('exit', function() {
 });
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -61,7 +60,6 @@ app.use('/images/*', function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 
 
 // catch 404 and forward to error handler
