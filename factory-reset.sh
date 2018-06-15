@@ -9,4 +9,4 @@ node /home/pi/oven-cam-server/firestore
 sudo rm -rf /etc/NetworkManager/system-connections/*
 
 # Reboot
-sudo shutdown -r
+sudo shutdown -r now
