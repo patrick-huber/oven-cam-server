@@ -93,10 +93,28 @@ def user_shutdown_setup(shutdown_pin):
     GPIO.setup(shutdown_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     # create a trigger for the shutdown switch
-    GPIO.add_event_detect(shutdown_pin, GPIO.RISING, callback=user_shutdown, bouncetime=1000)
+    # GPIO.add_event_detect(shutdown_pin, GPIO.RISING, callback=user_shutdown, bouncetime=1000)
+    GPIO.add_event_detect(shutdown_pin, GPIO.RISING, callback=button_press, bouncetime=1000)
 
-# User has pressed shutdown button - initiate a clean shutdown
-def user_shutdown(channel):
+# Check for length of button press and run shutdown for short press or factory reset for long press
+def button_press(channel):
+    button_time = 0
+    button_pressed = True
+    while button_pressed:
+        time.sleep(1)
+        button_time = button_time + 1
+        # GPIO.input() = 1 when pressed; 0 when released
+        if(GPIO.input(channel) == 0):
+            GPIO.remove_event_detect(channel)
+            button_pressed = False
+            if(button_time < 10):
+                user_shutdown()
+            else:
+                factoryReset()
+            button_time = -1
+
+# Initiate a clean shutdown
+def user_shutdown():
     global safe_mode
 
     # Update status
@@ -119,6 +137,25 @@ def user_shutdown(channel):
     GPIO.cleanup()
     os.system("sudo shutdown now")
 
+# Long press of shutdown button - run factory reset script
+def factoryReset():
+    # Update status file with reset trigger - Used by firestore to run reset method
+    # Need to merge reset_data with current status file 
+    with open("/home/pi/oven-cam-server/status.json", "r") as read_file:
+        data = json.load(read_file)
+        data["reset"] = True;
+
+    with open("/home/pi/oven-cam-server/status.json", "w") as write_file:
+        json.dump(data, write_file);
+
+    message = "sudo wall 'Factory reset running'"
+    os.system(message)
+
+    # Log message is added to /var/log/messages
+    os.system("sudo logger -t 'pi_power' '** Factory reset **'")
+    GPIO.cleanup()
+    cmd = "sh /home/pi/oven-cam-server/factory-reset.sh"
+    os.system(cmd)
 
 # Shutdown system because of low battery
 def low_battery_shutdown():
