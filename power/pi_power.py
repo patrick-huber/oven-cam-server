@@ -227,7 +227,7 @@ GPIO.setup(SPICLK,  GPIO.OUT)
 GPIO.setup(SPICS,   GPIO.OUT)
 
 # Vbat to adc #0, Vusb connected to #1
-v_bat_adc_pin = 0
+v_bat_adc_pin = 2
 v_usb_adc_pin = 1
 
 # Voltage divider drops the PowerBoost voltage from around 5V to under 3.3V which is the limit for the Pi

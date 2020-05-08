@@ -30,4 +30,6 @@ Power and battery status are run via the power/pi_power.py script. This script n
 /home/pi/oven-cam-server/power/pi_power.py &
 ```
 
-Pi power source: https://github.com/craic/pi_power
+Pi power source: https://github.com/craic/pi_powerPi power source: https://github.com/craic/pi_power
+
+*Note: Moved from channel 0 to 2 on the analog to digital converter (ADC)*
